@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Velin_Madalina_Lab2.Data;
 using Velin_Madalina_Lab2.Models;
 
-namespace Velin_Madalina_Lab2.Pages.Books
+namespace Velin_Madalina_Lab2.Pages.Authors
 {
     public class DetailsModel : PageModel
     {
@@ -20,7 +19,7 @@ namespace Velin_Madalina_Lab2.Pages.Books
             _context = context;
         }
 
-        public Book Book { get; set; } = default!;
+        public Author Author { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,17 +28,14 @@ namespace Velin_Madalina_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
-            
-            if (book == null)
+            var author = await _context.Author.FirstOrDefaultAsync(m => m.ID == id);
+            if (author == null)
             {
                 return NotFound();
             }
             else
             {
-                Book = book;
-                ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
-                ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID", "FullName");
+                Author = author;
             }
             return Page();
         }

@@ -43,6 +43,19 @@
             <select asp-for="Book.AuthorID" class="form-control" asp-items="ViewBag.AuthorID" disabled>
             </select>
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Book.BookCategories)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in Model.Book.BookCategories)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)<br/>
+                    </td>
+                </tr>
+            }
+        </dd>
     </dl>
 </div>
 <div>

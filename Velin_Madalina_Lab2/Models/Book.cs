@@ -25,5 +25,8 @@ namespace Velin_Madalina_Lab2.Models
         public int? AuthorID { get; set; }
 
         public Author? Author {  get; set; }
+
+        [Display(Name = "Categories")]
+        public ICollection<BookCategory>? BookCategories { get; set; }
     }
 }

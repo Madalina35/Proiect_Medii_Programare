@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Velin_Madalina_Lab2.Data;
 using Velin_Madalina_Lab2.Models;
+using Velin_Madalina_Lab2.Models.ViewModels;
 
 namespace Velin_Madalina_Lab2.Pages.Publishers
 {
@@ -20,13 +21,33 @@ namespace Velin_Madalina_Lab2.Pages.Publishers
         }
 
         public IList<Publisher> Publisher { get;set; } = default!;
-        public IList<Book> Book { get;set; } = default!;
+        public PublisherIndexData PublisherData { get; set; }
+        public int PublisherID { get; set; }
+        public int BookID { get; set; }
+        public async Task OnGetAsync(int? id, int? bookID)
+        {
+            PublisherData = new PublisherIndexData();
+            PublisherData.Publishers = await _context.Publisher
+                .Include(i => i.Books)
+                .ThenInclude(c => c.Author)
+                .OrderBy(i => i.PublisherName)
+                .ToListAsync();
+            if (id != null)
+            {
+                PublisherID = id.Value;
+                Publisher publisher = PublisherData.Publishers
+                .Where(i => i.ID == id.Value).Single();
+                PublisherData.Books = publisher.Books;
+            }
+        }
+
+        /*public IList<Book> Book { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
             Book = await _context.Book.Include(b=>b.Publisher).ToListAsync();
 
             Publisher = await _context.Publisher.ToListAsync();
-        }
+        }*/
     }
 }
